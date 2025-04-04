@@ -1,0 +1,67 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. MATCHRECORDS.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT FILE1 ASSIGN TO "file1.txt"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT FILE2 ASSIGN TO "file2.txt"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT FILE3 ASSIGN TO "file3.ps"
+               ORGANIZATION IS LINE SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD FILE1.
+       01 FILE1-RECORD.
+          05 FILE1-DATA PIC X(12).
+          05 FILE1-KEY  PIC X(8).
+          05 FILE1-REST PIC X(60).
+
+       FD FILE2.
+       01 FILE2-RECORD.
+          05 FILE2-DATA1 PIC X(20).
+          05 FILE2-KEY   PIC X(8).
+          05 FILE2-REST  PIC X(52).
+
+       FD FILE3.
+       01 FILE3-RECORD PIC X(80).
+
+       WORKING-STORAGE SECTION.
+       01 END-OF-FILE1 PIC X VALUE 'N'.
+       01 END-OF-FILE2 PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PROCEDURE.
+           OPEN INPUT FILE1
+                INPUT FILE2
+                OUTPUT FILE3.
+
+           PERFORM READ-FILE1.
+           PERFORM READ-FILE2.
+
+           PERFORM MATCH-RECORDS 
+               UNTIL END-OF-FILE1 = 'Y' OR END-OF-FILE2 = 'Y'.
+
+           CLOSE FILE1 FILE2 FILE3.
+
+           STOP RUN.
+
+       READ-FILE1.
+           READ FILE1 AT END MOVE 'Y' TO END-OF-FILE1.
+
+       READ-FILE2.
+           READ FILE2 AT END MOVE 'Y' TO END-OF-FILE2.
+
+       MATCH-RECORDS.
+           IF FILE1-KEY = FILE2-KEY THEN
+               MOVE FILE1-RECORD TO FILE3-RECORD
+               WRITE FILE3-RECORD
+               PERFORM READ-FILE1
+               PERFORM READ-FILE2
+           ELSE
+               IF FILE1-KEY < FILE2-KEY THEN
+                   PERFORM READ-FILE1
+               ELSE
+                   PERFORM READ-FILE2.
