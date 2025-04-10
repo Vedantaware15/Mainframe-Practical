@@ -1,0 +1,57 @@
+# IBM JCL SORT Utility Assignment
+
+This project demonstrates the use of IBM JCL (Job Control Language) to perform file handling, sorting, conditional execution, and error handling using the SORT utility and ICETOOL.
+
+---
+
+## 📝 Problem Statement
+
+Write a JCL job that:
+1. Copies an input file (PS/PO) to an output file using the IBM SORT utility in descending order.
+2. Compares the total number of records before and after the sort.
+3. Keeps the output file only if the record counts match. If not, it should discard the output and print an error message.
+4. Test and demonstrate both a success case and a fail case.
+
+---
+
+## 📁 Files Structure
+
+### ✅ Success Case
+
+These files demonstrate a working scenario where the input and output record counts match after sorting:
+
+| File Name                    | Description                                  |
+|------------------------------|----------------------------------------------|
+| `SORTJOB1`                   | JCL job for the success case                 |
+| `Z67429.JCL.SORTIN1`         | Input dataset for the success case           |
+| `Z67429.JCL.SORTOUT1`        | Output dataset generated after sorting       |
+
+---
+
+### ❌ Fail Case
+
+These files simulate a failure scenario where the input and output record counts **do not match** (e.g., due to duplicate or missing records):
+
+| File Name                    | Description                                  |
+|------------------------------|----------------------------------------------|
+| `SORTJOB2`                   | JCL job for the failure case                 |
+| `Z67429.JCL.SORTIN2`         | Input dataset containing duplicated records  |
+| `Z67429.JCL.SORTOUT2`        | Output dataset that gets deleted and replaced with an error message |
+
+---
+
+## 💡 Features Used
+
+- SORT utility: To sort data in descending order.
+- ICETOOL COUNT: To count records in input and output files.
+- Conditional execution (COND): To control whether to keep or delete the output.
+- IEFBR14: To delete the output file if counts do not match.
+- IEBGENER: To write a custom error message in the output dataset if the job fails.
+
+---
+
+## ✅ Output Behavior
+
+- If record counts match, the output dataset will contain the sorted data.
+- If record counts do not match, the output dataset will be deleted and replaced with the following error message:
+
