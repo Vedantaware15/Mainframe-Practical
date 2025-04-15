@@ -1,0 +1,90 @@
+# COBOL VSAM KSDS Project
+
+This project demonstrates how to create and manipulate a VSAM KSDS (Key Sequenced Data Set) using IBM Enterprise COBOL on z/OS. It includes steps for defining the VSAM dataset, compiling and linking the COBOL program, and executing the program to perform various operations on the VSAM dataset.
+
+## Project Overview
+
+The project consists of the following steps:
+1. **Step 1:** Define the VSAM KSDS Cluster.
+2. **Step 2:** Compile and link the COBOL program.
+3. **Step 3:** Execute the COBOL program to perform operations on the VSAM dataset (such as writing, reading, and searching for customer records).
+
+### Steps in the JCL
+
+1. **VSAM Cluster Definition (DEFVSAM):**
+   - This step defines a VSAM KSDS dataset (`Z67429.ASS5.KSDS`), including its data and index components.
+
+2. **COBOL Program Compilation (COBRUN):**
+   - The COBOL program is compiled and linked using the IBM COBOL compiler (`IGYWCL`). The output is stored in the `Z67429.LOAD` dataset.
+
+3. **Running the COBOL Program (RUN):**
+   - This step executes the COBOL program `ASS5`, where the VSAM KSDS dataset is accessed and manipulated based on the logic in the COBOL code.
+
+## Prerequisites
+
+- IBM z/OS environment with access to COBOL and VSAM utilities.
+- Proper dataset allocation and permissions for creating VSAM datasets.
+- Knowledge of IBM JCL, COBOL, and VSAM on z/OS.
+
+## File Structure
+
+- **COBOL Program (`ASS5.cbl`)**: The COBOL source code that performs operations on the VSAM dataset.
+- **JCL Script (`ASS5.jcl`)**: The JCL that defines the steps for defining the VSAM dataset, compiling the COBOL program, and running it.
+
+### COBOL Program Overview (`ASS5.cbl`)
+
+This program is designed to:
+
+1. **Initialize the VSAM file** (`CUST-FILE`).
+2. **Write customer records** with auto-incremented IDs.
+3. **Display all customer records**.
+4. **Search for a specific customer record by ID**.
+
+The program uses the following steps:
+- `INIT-PARA`: Opens the VSAM file and prepares for writing.
+- `WRITE-PARA`: Writes customer records into the VSAM dataset.
+- `DISPLAY-PARA`: Displays the records from the VSAM file.
+- `SEARCH-PARA`: Prompts the user to enter a customer ID to search for in the dataset.
+
+### JCL Overview (`ASS5.jcl`)
+
+The JCL script defines three main steps:
+
+1. **DEFVSAM**: Defines the VSAM dataset and its components.
+2. **COBRUN**: Compiles and links the COBOL program.
+3. **RUN**: Executes the COBOL program, performing operations on the VSAM dataset.
+
+### Example Input and Output
+
+#### Example Input for `SEARCH-PARA`:
+Enter customer ID to search: 00000002
+#### Example Output:
+CUSTOMER RECORDS:
+ID: 00000001 NAME: Customer Name 1 ADDRESS: Address 1 Street, City ID: 00000002 NAME: Customer Name 2 ADDRESS: Address 2 Street, City FOUND THE DATA SET ID: 00000002 NAME: Customer Name 2 ADDRESS: Address 2 Street, City
+
+## How to Run
+
+### Step 1: Define the VSAM KSDS
+
+Run the `DEFVSAM` step to create the VSAM dataset. Ensure the `Z67429.ASS5.KSDS` dataset is successfully created.
+
+### Step 2: Compile the COBOL Program
+
+Execute the `COBRUN` step to compile and link the COBOL program.
+
+### Step 3: Run the COBOL Program
+
+Execute the `RUN` step to perform the operations defined in the COBOL program.
+
+## Troubleshooting
+
+- **JCL Error Codes:**
+   - If you encounter an error in the JCL, check the return codes (MAXCC) from each step.
+   - The VSAM dataset may not be created if the `DEFVSAM` step fails. Ensure the cluster is defined correctly.
+
+- **Dataset Issues:**
+   - If the dataset `Z67429.ASS5.KSDS` already exists, you may need to delete it before running the `DEFVSAM` step.
+
+## Conclusion
+
+This project demonstrates how to work with VSAM KSDS datasets in a COBOL program on z/OS. You can use this project as a reference for defining, manipulating, and managing VSAM datasets in real-world applications.
